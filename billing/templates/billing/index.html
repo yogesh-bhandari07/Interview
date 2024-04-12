@@ -34,7 +34,7 @@
                     {{product.price}}
                 </td>
                 <td class="px-6 py-4">
-                    <p class="productItem">
+                    <p class="productItem" data-id="{{product.id}}">
                         0
                     </p>
                 </td>
@@ -79,7 +79,7 @@
             } else {
                 items[id] = product
             }
-            $('.productItem').text(items[id]['qty']);
+            $('.productItem[data-id="' + id + '"]').text(items[id]['qty']);
             updateTotal()
 
         })
@@ -89,7 +89,7 @@
             if (items.hasOwnProperty(id)) {
                 items[id]['qty'] = items[id]['qty'] - 1
             }
-            $('.productItem').text(items[id]['qty']);
+            $('.productItem[data-id="' + id + '"]').text(items[id]['qty']);
 
             updateTotal()
 

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="w-100 flex flex-col">
+
+
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Product name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Price
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Item
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{product.name}}
+                </th>
+                <td class="px-6 py-4">
+                    {{product.price}}
+                </td>
+                <td class="px-6 py-4">
+                    <p class="productItem">
+                        0
+                    </p>
+                </td>
+                <td class="px-6 py-4 flex flex-row  items-center space-x-2">
+
+                    <button class="addItem" data-id="{{product.id}}" data-price="{{product.price}}"> Add</button>
+                    <button class="deleteItem" data-id="{{product.id}}" data-price="{{product.price}}">Delete</button>
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+    <p class="">Total - <span class="total"></span></p>
+
+</div>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        let items = {}
+        $(".addItem").on('click', function () {
+            let id = $(this).data('id')
+            let price = $(this).data('price')
+            let product = {
+                'id': id,
+                'price': price,
+                'qty': 1
+            }
+            if (items.hasOwnProperty(id)) {
+                items[id]['qty'] = items[id]['qty'] + 1
+            } else {
+                items[id] = product
+            }
+            $('.productItem').text(items[id]['qty']);
+            updateTotal()
+
+        })
+
+        $(".deleteItem").on('click', function () {
+            let id = $(this).data('id')
+            if (items.hasOwnProperty(id)) {
+                items[id]['qty'] = items[id]['qty'] - 1
+            }
+            $('.productItem').text(items[id]['qty']);
+
+            updateTotal()
+
+        })
+
+
+        function updateTotal() {
+            let total = 0;
+            for (let id in items) {
+                total += items[id]['price'] * items[id]['qty'];
+            }
+            $('.total').text(total.toFixed(2));
+        }
+
+    })
+</script>
+
+
+{% endblock content %}
